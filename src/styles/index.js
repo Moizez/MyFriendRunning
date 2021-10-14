@@ -3,22 +3,18 @@ import styled from 'styled-components/native';
 import {
   Text as TextPaper,
   Title as TitlePaper,
-  //   Badge as BadgePaper,
+  Badge as BadgePaper,
   Button as ButtonPaper,
   TextInput as TextInputPaper,
   //   ProgressBar as ProgressBarPaper,
-  //   ActivityIndicator as ActivityIndicatorPaper,
+  ActivityIndicator as ActivityIndicatorPaper,
 } from 'react-native-paper';
 
-// import { TouchableOpacity } from 'react-native-gesture-handler';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ProgressCircle as ProgressCircleSVG } from 'react-native-svg-charts';
+import util from '../util/util';
 
-import { ScrollView as ScrollViewComponent } from 'react-native-gesture-handler';
-
-// import util from '../util';
-
-export const ScrollView = styled(ScrollViewComponent)`
+export const ScrollView = styled.ScrollView`
   width: 100%;
   background: ${(props) =>
     props.theme[props.background] || props.background || 'transparent'};
@@ -37,7 +33,7 @@ export const Cover = styled.ImageBackground.attrs((props) => ({
   max-height: ${(props) => props.height || '100px'};
   min-height: ${(props) => props.height || '100px'};
   margin: ${(props) => props.spacing || '0px'};
-  border-radius: ${(props) => props.rounded || 0};
+  border-radius: ${(props) => props.radius || 0};
   border: ${(props) => props.border || 'none'};
   overflow: hidden;
   background-color: ${({ theme, transparent }) =>
@@ -66,19 +62,31 @@ export const Container = styled.View`
     props.theme[props.background] || props.background || 'transparent'};
 `;
 
-// export const Touchable = styled(TouchableOpacity)`
-//   flex-direction: ${(props) => props.direction || 'row'};
-//   justify-content: ${(props) => props.justify || 'flex-start'};
-//   align-items: ${(props) => props.align || 'flex-start'};
-//   width: ${(props) => props.width || '100%'};
-//   height: ${(props) => props.height || 'auto'};
-//   padding: ${(props) => (props.hasPadding ? '20px' : '0px')};
-//   margin: ${(props) => props.spacing || 0};
-//   background: ${(props) =>
-//     props.theme[props.background] || props.background || 'transparent'};
-//   border-radius: ${(props) => props.rounded || 0};
-//   border: ${(props) => props.border || 'none'};
-// `;
+export const Touchable = styled.TouchableOpacity`
+  flex: 1;
+  flex-wrap: ${(props) => props.wrap || 'nowrap'};
+  flex-direction: ${(props) => (props.row ? 'row' : 'column')};
+  justify-content: ${(props) => props.justify || 'flex-start'};
+  align-items: ${(props) => props.align || 'flex-start'};
+
+  width: ${(props) => props.width || '100%'};
+  max-width: ${(props) => props.width || '100%'};
+  min-width: ${(props) => props.width || '100%'};
+
+
+  height: ${(props) => props.height || 'auto'};
+  max-height: ${(props) => props.height || 'auto'};
+  min-height: ${(props) => props.height || 'auto'};
+
+  padding: ${(props) => (props.hasPadding ? '20px' : '0px')};
+
+  margin: ${(props) => props.spacing || 0};
+  border-radius: ${(props) => props.radius || 0};
+  border: ${(props) => props.border || 'none'};
+
+  background: ${(props) =>
+    props.theme[props.background] || props.background || 'transparent'};
+`;
 
 export const GradientView = styled(LinearGradient)`
   flex: 1;
@@ -114,20 +122,19 @@ export const Text = styled(TextPaper).attrs({})`
   text-decoration: ${(props) => props.decoration || 'none'};
 `;
 
-// export const Badge = styled(BadgePaper)`
-//   align-self: flex-start;
-//   width: auto;
-//   height: auto;
-//   font-size: ${(props) => (props.big ? '20px' : '16px')};
-//   padding: ${(props) => (props.big ? '12px 15px' : '5px 10px')};
-//   line-height: 25px;
-//   margin: ${(props) => props.spacing || '0px'};
-//   align-self: ${(props) => props.align || 'flex-start'};
-//   border-radius: 100px;
-//   color: ${(props) => props.theme[props.color || 'danger']};
-//   background: ${(props) =>
-//     util.toAlpha(props.theme[props.color || 'danger'], 20)};
-// `;
+export const Badge = styled(BadgePaper)`
+  width: auto;
+  height: auto;
+  font-size: ${(props) => (props.big ? '20px' : '16px')};
+  padding: ${(props) => (props.big ? '12px 15px' : '5px 10px')};
+  line-height: 25px;
+  margin: ${(props) => props.spacing || '0px'};
+  align-self: ${(props) => props.align || 'flex-start'};
+  border-radius: 100px;
+  color: ${(props) => props.theme[props.color || 'danger']};
+  background: ${(props) =>
+    util.toAlpha(props.theme[props.color || 'danger'], 20)};
+`;
 
 export const Button = styled(ButtonPaper).attrs((props) => ({
   color:
@@ -179,9 +186,12 @@ export const ProgressCircle = styled(ProgressCircleSVG).attrs((props) => ({
 //   background: ${(props) => util.toAlpha(props.theme.light, 20)};
 // `;
 
-// export const ActivityIndicator = styled(ActivityIndicatorPaper).attrs(
-//   (props) => ({
-//     animating: true,
-//     color: props.theme[props.color],
-//   })
-// )``;
+export const ActivityIndicator = styled(ActivityIndicatorPaper).attrs((props) => ({
+  animating: true,
+  color: props.theme[props.color || 'primary'],
+})
+)``;
+
+export const FlatList = styled.FlatList`
+  width: 100%;
+`;
