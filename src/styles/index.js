@@ -6,7 +6,7 @@ import {
   Badge as BadgePaper,
   Button as ButtonPaper,
   TextInput as TextInputPaper,
-  //   ProgressBar as ProgressBarPaper,
+  ProgressBar as ProgressBarPaper,
   ActivityIndicator as ActivityIndicatorPaper,
 } from 'react-native-paper';
 
@@ -177,14 +177,14 @@ export const ProgressCircle = styled(ProgressCircleSVG).attrs((props) => ({
   position: absolute;
 `;
 
-// export const ProgressBar = styled(ProgressBarPaper).attrs((props) => ({
-//   color: props.theme[props.color] || props.theme.info,
-// }))`
-//   width: ${(props) => props.width || '100px'};
-//   height: 10px;
-//   border-radius: 20px;
-//   background: ${(props) => util.toAlpha(props.theme.light, 20)};
-// `;
+export const ProgressBar = styled(ProgressBarPaper).attrs((props) => ({
+  color: props.theme[props.color] || props.theme.primary,
+}))`
+  width: ${(props) => props.width || '100px'};
+  height: 10px;
+  border-radius: 20px;
+  background: ${(props) => util.toAlpha(props.theme.light, 20)};
+`;
 
 export const ActivityIndicator = styled(ActivityIndicatorPaper).attrs((props) => ({
   animating: true,

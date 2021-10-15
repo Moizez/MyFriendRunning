@@ -75,7 +75,7 @@ const Home = () => {
                     {/* <Container background='dark50' hasPadding radius='3px'>
                         <Title color='light' small>Correr 2 km todos os dias às 5 am durante 15 dias.</Title>
                         <Spacer />
-                        <Text color='light'>Mantenha a consistencia todos os dias para criar um hábito O desafio termina em 30/07/2021.</Text>
+                        <Text color='light'>Mantenha a consistencia todos os dias para criar um hábito. O desafio termina em 30/07/2021.</Text>
                         <Spacer size='20px' />
                         <Button block background='success'>Participar Agora</Button>
                     </Container>

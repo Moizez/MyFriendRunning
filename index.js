@@ -4,6 +4,12 @@ import { registerRootComponent } from 'expo';
 import { ThemeProvider } from 'styled-components/native'
 import { Provider as PaperProvider } from 'react-native-paper'
 import { colors } from './src/styles/theme.json'
+import { LogBox } from 'react-native';
+
+import { Provider as StoreProvider } from 'react-redux'
+import store from './src/store'
+
+LogBox.ignoreAllLogs()
 
 import {
     useFonts,
@@ -17,10 +23,8 @@ import {
     Ubuntu_700Bold_Italic,
 } from '@expo-google-fonts/ubuntu';
 
-//Screens
-import Tour from './src/screens/Tour';
-import SignIn from './src/screens/SignIn';
-import Home from './src/screens/Home';
+//Navigation
+import Routes from './src/routes';
 
 const App = () => {
 
@@ -41,11 +45,13 @@ const App = () => {
     }
 
     return (
-        <ThemeProvider theme={colors}>
-            <PaperProvider>
-                <Home />
-            </PaperProvider>
-        </ThemeProvider>
+        <StoreProvider store={store}>
+            <ThemeProvider theme={colors}>
+                <PaperProvider>
+                    <Routes />
+                </PaperProvider>
+            </ThemeProvider>
+        </StoreProvider>
     )
 }
 
