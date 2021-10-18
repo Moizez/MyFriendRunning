@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { Container, Cover, Spacer, Title, Text, Button } from '../../styles/'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import illustrationOne from '../../assets/illustration-1.png'
 import illustrationTwo from '../../assets/illustration-2.png'
 import illustrationThree from '../../assets/illustration-3.png'
 
+import { replace } from '../../services/navigation'
 
 const Tour = () => {
 
@@ -36,6 +39,11 @@ const Tour = () => {
         },
     ];
 
+    const goToSignIn = async () => {
+        await AsyncStorage.setItem('@tour', 'Y')
+        replace('SignIn')
+    }
+
     return (
         <Container background={tourData[currentTour]?.bg} hasPadding justify='center'>
             <Spacer size='40px' />
@@ -46,7 +54,13 @@ const Tour = () => {
             <Text color={tourData[currentTour]?.descColor} align='center'>{tourData[currentTour]?.desc}</Text>
             <Spacer size='50px' />
             <Button
-                onPress={() => setCurrentTour(currentTour + 1)}
+                onPress={() => {
+                    if (currentTour === 2) {
+                        goToSignIn()
+                    } else {
+                        setCurrentTour(currentTour + 1)
+                    }
+                }}
                 background={tourData[currentTour]?.button}
                 block
             >

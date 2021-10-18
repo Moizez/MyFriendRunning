@@ -30,6 +30,8 @@ export const Cover = styled.ImageBackground.attrs((props) => ({
 }))`
   width: ${(props) => props.width || '100px'};
   height: ${(props) => props.height || '100px'};
+  justify-content: ${(props) => props.justify || 'flex-start'};
+  padding: ${(props) => (props.hasPadding ? '20px' : '0px')};
   max-height: ${(props) => props.height || '100px'};
   min-height: ${(props) => props.height || '100px'};
   margin: ${(props) => props.spacing || '0px'};
