@@ -1,6 +1,6 @@
 import types from "./types";
 
-export function signinUser() {
+export function signInUser() {
     return { type: types.SIGNIN_USER }
 }
 
@@ -10,6 +10,14 @@ export function setReducer(payload, key) {
 
 export function setUser(payload) {
     return { type: types.SET_USER, payload };
+}
+
+export function saveUser() {
+    return { type: types.SAVE_USER }
+}
+
+export function setForm(payload) {
+    return { type: types.SET_FORM, payload };
 }
 
 export function reset(key) {

@@ -2,9 +2,10 @@ import React, { createRef } from 'react';
 import { Modalize } from 'react-native-modalize'
 import { Container, Spacer, Title, Button, TextInput } from '../../styles/'
 import TextInputMask from '../TextInputMask';
-
+import inviteSchema from '../../schemas/inviteSchema'
+import { Alert } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux'
-import { setUser as setUserAction } from '../../store/modules/app/actions'
+import { setUser as setUserAction, saveUser as saveUserAction } from '../../store/modules/app/actions'
 import Uploader from '../Uploader';
 
 export const modalRef = createRef()
@@ -16,6 +17,15 @@ const InviteModal = () => {
 
     const setUser = (payload) => {
         dispatch(setUserAction(payload))
+    }
+
+    const requestInvite = async () => {
+        try {
+            await inviteSchema.validate(userForm)
+            dispatch(saveUserAction)
+        } catch ({ errors }) {
+            Alert.alert(errors[0], 'Corrija o erro antes de continuar!')
+        }
     }
 
 
@@ -108,7 +118,15 @@ const InviteModal = () => {
                 />
 
                 <Spacer size='35px' />
-                <Button block background='success'>Enviar Dados</Button>
+                <Button
+                    block
+                    background='success'
+                    disabled={form?.saving}
+                    loading={form?.saving}
+                    onPress={requestInvite}
+                >
+                    Enviar Dados
+                </Button>
             </Container>
         </Modalize>
     );
