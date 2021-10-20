@@ -12,7 +12,7 @@ const Stack = createStackNavigator()
 
 const MainStack = () => {
     return (
-        <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='SignIn'>
+        <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='MainTab'>
             <Stack.Screen name='MainTab' component={MainTab} />
             <Stack.Screen name='Tour' component={Tour} />
             <Stack.Screen name='SignIn' component={SignIn} />

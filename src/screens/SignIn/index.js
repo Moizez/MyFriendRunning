@@ -4,25 +4,30 @@ import InviteModal, { modalRef as modalInviteRef } from '../../components/Modal/
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import logo from '../../assets/logo.png'
 import { replace } from '../../services/navigation'
+import { useDispatch } from 'react-redux'
+import { setReducer } from '../../store/modules/app/actions'
 
 import { Container, Cover, Spacer, Title, Text, Button, ActivityIndicator } from '../../styles/'
 
 
 const SignIn = () => {
 
+    const dispatch = useDispatch()
     const [loading, setLoading] = useState(true)
 
     const getLoggedState = async () => {
         //await AsyncStorage.clear()
         const user = await AsyncStorage.getItem('@user')
         const tour = await AsyncStorage.getItem('@tour')
+        
         if (!tour) {
             replace('Tour')
             return
         } else if (!user) {
             setLoading(false)
         } else {
-            replace('Home')
+            dispatch(setReducer(JSON.parse(user), 'user'))
+            replace('MainTab')
         }
     }
 

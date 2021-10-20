@@ -12,25 +12,21 @@ import { modalRef as modalSignInRef } from '../../../components/Modal/SignInModa
 import { replace } from '../../../services/navigation'
 import { setReducer, setForm, reset } from './actions'
 
-
 export function* signInUser() {
-    const { userForm: { email, password } } = yield select(state => state.app)
+    const { user } = yield select(state => state.app)
     yield put(setForm({ loading: true }))
 
     try {
 
-        const { data: response } = yield call(api.post, '/user/login', { email, password })
+        const { data: response } = yield call(api.get, `/user/${user?._id}/challenge`)
 
         if (response.error) {
             throw new Error(response.message)
         }
 
-        yield call(AsyncStorage.setItem('@user', JSON.stringify(response.user)))
-        yield put(setReducer(response.user, 'user'))
-        yield put(reset('userForm'))
-        //modalInviteRef.current.close()
-        yield call(modalSignInRef?.current?.close)
-        yield call(replace, 'Home')
+        for (let key of Object.keys(response)) {
+            yield put(setReducer(response[key], key))
+        }
 
     } catch (error) {
         yield call(Alert.alert, 'Erro interno!', error.message)
@@ -86,7 +82,35 @@ export function* saveUser() {
 
 }
 
+export function* getHome() {
+    const { userForm } = yield select(state => state.app)
+    yield put(setForm({ loading: true }))
+
+    try {
+
+        const { data: response } = yield call(api.post, '/user/login', userForm)
+
+        if (response.error) {
+            throw new Error(response.message)
+        }
+
+        yield call(AsyncStorage.setItem('@user', JSON.stringify(response.user)))
+        yield put(setReducer(response.user, 'user'))
+        yield put(reset('userForm'))
+        //modalInviteRef.current.close()
+        yield call(modalSignInRef?.current?.close)
+        yield call(replace, 'Home')
+
+    } catch (error) {
+        yield call(Alert.alert, 'Erro interno!', error.message)
+    } finally {
+        yield put(setForm({ loading: false }))
+    }
+
+}
+
 export default all([
     takeLatest(types.SIGNIN_USER, signInUser),
     takeLatest(types.SAVE_USER, saveUser),
+    takeLatest(types.GET_HOME, getHome),
 ])

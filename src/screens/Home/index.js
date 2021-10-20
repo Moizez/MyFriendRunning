@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import YoutubePlayer from "react-native-youtube-iframe";
 import { colors } from '../../styles/theme.json'
+import { useSelector, useDispatch } from 'react-redux'
+import { getHome } from '../../store/modules/app/actions'
 
 import {
     Container, ScrollView, GradientView, Cover, Text, Title, Spacer, ProgressCircle,
@@ -8,6 +10,26 @@ import {
 } from '../../styles';
 
 const Home = () => {
+
+    const dispatch = useDispatch()
+    const {
+        user,
+        isParticipant,
+        challenge,
+        balance,
+        form,
+        tracking,
+        dailyAmount,
+        challengePeriod,
+        participatedTimes,
+        discipline,
+        dailyResults
+    } = useSelector(state => state.app)
+
+    useEffect(() => {
+        dispatch(getHome())
+    }, [])
+
     return (
         <ScrollView background='dark' hasPadding>
             <GradientView
@@ -47,9 +69,9 @@ const Home = () => {
 
 
             <Container hasPadding spacing='-50px 0 0'>
-                <>
-                    {/* BUSCANDO DESAFIOS */}
-                    {/* <Container background='dark50' hasPadding radius='3px' align='center'>
+                {/* CARREGANDO INFORMAÇÕES */}
+                {form?.loading &&
+                    <Container background='dark50' hasPadding radius='3px' align='center'>
                         <Spacer />
                         <ActivityIndicator />
                         <Spacer size='20px' />
@@ -57,32 +79,44 @@ const Home = () => {
                         <Spacer />
                         <Text color='light'>Aguarde alguns instantes...</Text>
                     </Container>
+                }
 
-                    <Spacer size='20px' /> */}
+                <Spacer size='20px' />
 
-                    {/* CASO NÃO TENHA DESAFIOS */}
-                    {/* <Container background='dark50' hasPadding radius='3px' align='center'>
+                {/* CASO NÃO TENHA DESAFIOS */}
+                {!form?.loading && !challenge &&
+                    <Container background='dark50' hasPadding radius='3px' align='center'>
                         <Title color='light' small>Nenhum desafio encontrado.</Title>
                         <Spacer />
                         <Text color='light'>No momento, não há desafios para fazer.</Text>
                         <Spacer size='20px' />
-                        <Button block background='success'>Recarregar</Button>
+                        <Button
+                            block
+                            background='success'
+                            onPress={() => dispatch(getHome())}
+                        >
+                            Recarregar
+                        </Button>
                     </Container>
+                }
 
-                    <Spacer size='20px' /> */}
+                <Spacer size='20px' />
 
-                    {/* CASO TENHA DESAFIO E NÃO PARTICIPE */}
-                    {/* <Container background='dark50' hasPadding radius='3px'>
+                {/* CASO TENHA DESAFIO E NÃO PARTICIPE */}
+                {!form?.loading &&
+                    <Container background='dark50' hasPadding radius='3px'>
                         <Title color='light' small>Correr 2 km todos os dias às 5 am durante 15 dias.</Title>
                         <Spacer />
                         <Text color='light'>Mantenha a consistencia todos os dias para criar um hábito. O desafio termina em 30/07/2021.</Text>
                         <Spacer size='20px' />
                         <Button block background='success'>Participar Agora</Button>
                     </Container>
+                }
 
-                    <Spacer size='20px' /> */}
+                <Spacer size='20px' />
 
-                    {/* <Container background='dark50' hasPadding radius='3px'>
+                {!form?.loading &&
+                    <Container background='dark50' hasPadding radius='3px'>
                         <Title color='light' small>E aí? Vai encarar o desafio?</Title>
                         <Spacer />
                         <YoutubePlayer
@@ -90,58 +124,65 @@ const Home = () => {
                             width='100%'
                             videoId='PJXvT4vpQwU'
                         />
-                    </Container> */}
-                </>
+                    </Container>
+                }
+
+                <Spacer size='20px' />
 
                 {/* RESULTADOS DE HOJE */}
-                {/* <Container background='dark50' hasPadding radius='3px'>
-                    <Text color='light'>Quarta-feira, 15/10/2021.</Text>
-                    <Spacer />
-                    <Title color='light' small>Resultados de hoje.</Title>
-                    <Spacer size='20px' />
-                    <FlatList
-                        data={[1, 2, 3, 4, 5, 6, 7, 8, 9]}
-                        renderItem={({ item }) => (
-                            <Container row width='100%' height='50px' justify='space-between'>
-                                <Container row align='center'>
-                                    <Cover
-                                        source={{ uri: 'https://preview.keenthemes.com/metronic-v4/theme/assets/pages/media/profile/profile_user.jpg' }}
-                                        width='35px'
-                                        height='35px'
-                                        radius='35px'
-                                        mode='cover'
-                                        spacing='0 5px 0 0'
-                                    />
-                                    <Text bold color='light'>Moisés Henrique</Text>
+                {!form?.loading &&
+                    <Container background='dark50' hasPadding radius='3px'>
+                        <Text color='light'>Quarta-feira, 15/10/2021.</Text>
+                        <Spacer />
+                        <Title color='light' small>Resultados de hoje.</Title>
+                        <Spacer size='20px' />
+                        <FlatList
+                            data={[1, 2, 3, 4, 5, 6, 7, 8, 9]}
+                            renderItem={({ item }) => (
+                                <Container row width='100%' height='50px' justify='space-between'>
+                                    <Container row align='center'>
+                                        <Cover
+                                            source={{ uri: 'https://preview.keenthemes.com/metronic-v4/theme/assets/pages/media/profile/profile_user.jpg' }}
+                                            width='35px'
+                                            height='35px'
+                                            radius='35px'
+                                            mode='cover'
+                                            spacing='0 5px 0 0'
+                                        />
+                                        <Text bold color='light'>Moisés Henrique</Text>
+                                    </Container>
+                                    <Badge color="success">+ R$ 50</Badge>
                                 </Container>
-                                <Badge color="success">+ R$ 50</Badge>
-                            </Container>
-                        )}
-                        ListEmptyComponent={() => (
-                            <Container align='center' spacing='20px 0 0'>
-                                <Title color='light' small>Nenhum resultado...</Title>
-                                <Spacer />
-                                <Text color='light' align='center'>O seu desafio começa em{' '}<Text color='danger'>algumas horas</Text></Text>
-                                <Spacer size='20px' />
-                                <Button block background='success'>Recarregar</Button>
-                            </Container>
-                        )}
-                    />
-                </Container> */}
+                            )}
+                            ListEmptyComponent={() => (
+                                <Container align='center' spacing='20px 0 0'>
+                                    <Title color='light' small>Nenhum resultado...</Title>
+                                    <Spacer />
+                                    <Text color='light' align='center'>O seu desafio começa em{' '}<Text color='danger'>algumas horas</Text></Text>
+                                    <Spacer size='20px' />
+                                    <Button block background='success'>Recarregar</Button>
+                                </Container>
+                            )}
+                        />
+                    </Container>
+                }
+
+                <Spacer size='20px' />
 
                 {/* SE ESTÁ NA HORA DO DESAFIO */}
-
-                <Container background='dark50' align='center' hasPadding radius='3px'>
-                    <Badge align='center' color="success">+ R$ 50</Badge>
-                    <Spacer size='20px' />
-                    <Text color='light'>Quarta-feira, 15/10/2021.</Text>
-                    <Spacer />
-                    <Title color='light' small>Inicie seu compromisso.</Title>
-                    <Spacer size='30px' />
-                    <Title big color='danger' scale={1.5}>30:00</Title>
-                    <Spacer size='35px' />
-                    <Button block background='primary'>iniciar Agora</Button>
-                </Container>
+                {!form?.loading &&
+                    <Container background='dark50' align='center' hasPadding radius='3px'>
+                        <Badge align='center' color="success">+ R$ 50</Badge>
+                        <Spacer size='20px' />
+                        <Text color='light'>Quarta-feira, 15/10/2021.</Text>
+                        <Spacer />
+                        <Title color='light' small>Inicie seu compromisso.</Title>
+                        <Spacer size='30px' />
+                        <Title big color='danger' scale={1.5}>30:00</Title>
+                        <Spacer size='35px' />
+                        <Button block background='primary'>iniciar Agora</Button>
+                    </Container>
+                }
 
             </Container>
 

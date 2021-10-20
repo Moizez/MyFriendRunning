@@ -20,6 +20,10 @@ export function setForm(payload) {
     return { type: types.SET_FORM, payload };
 }
 
+export function getHome() {
+    return { type: types.GET_HOME}
+}
+
 export function reset(key) {
     return { type: types.RESET, key }
 }
